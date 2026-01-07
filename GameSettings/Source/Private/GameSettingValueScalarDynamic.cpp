@@ -5,6 +5,7 @@
 #include "DataSource/GameSettingDataSource.h"
 #include "DataSource/GameSettingDataSourceDynamic.h"
 #include "Logging/LogMacros.h"
+#include "UObject/UnrealType.h"
 #include "UObject/WeakObjectPtr.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(GameSettingValueScalarDynamic)
@@ -80,7 +81,7 @@ FSettingScalarFormatFunction UGameSettingValueScalarDynamic::SourceAsPercent100(
 
 UGameSettingValueScalarDynamic::UGameSettingValueScalarDynamic()
 {
-	SetDisplayFormatPreset(EGameSettingScalarDynamicFormat::Raw);
+	DisplayFormat = Raw;
 }
 
 void UGameSettingValueScalarDynamic::Startup()
@@ -187,7 +188,14 @@ void UGameSettingValueScalarDynamic::SetDisplayFormatPreset(EGameSettingScalarDy
 		DisplayFormat = SourceAsInteger;
 		break;
 	default:
-		UE_LOG(LogGameSettingValueScalarDynamic, Warning, TEXT("SetDisplayFormatPreset received unknown preset %d"), static_cast<int32>(InPreset));
+		if (const UEnum* ScalarFormatEnum = StaticEnum<EGameSettingScalarDynamicFormat>())
+		{
+			UE_LOG(LogGameSettingValueScalarDynamic, Warning, TEXT("SetDisplayFormatPreset received unknown preset %s"), *ScalarFormatEnum->GetNameStringByValue(static_cast<int64>(InPreset)));
+		}
+		else
+		{
+			UE_LOG(LogGameSettingValueScalarDynamic, Warning, TEXT("SetDisplayFormatPreset received unknown preset value %d"), static_cast<int32>(InPreset));
+		}
 		DisplayFormat = Raw;
 		break;
 	}
