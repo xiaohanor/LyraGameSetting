@@ -64,12 +64,12 @@ void UGameSettingValueDiscreteDynamic::RemoveDynamicOption(FString InOptionValue
 
 const TArray<FString>& UGameSettingValueDiscreteDynamic::GetDynamicOptions() const
 {
-       return OptionValues;
+	return OptionValues;
 }
 
 TArray<FString> UGameSettingValueDiscreteDynamic::GetDynamicOptionsCopy() const
 {
-       return OptionValues;
+	return OptionValues;
 }
 
 bool UGameSettingValueDiscreteDynamic::HasDynamicOption(const FString& InOptionValue)
