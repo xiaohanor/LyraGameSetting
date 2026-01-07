@@ -76,13 +76,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "GameSetting")
 	UE_API void SetDefaultValue(double InValue);
 
-	/**  */
+	/** Sets a custom formatting function for displaying the scalar value. */
 	UE_API void SetDisplayFormat(FSettingScalarFormatFunction InDisplayFormat);
-	/**  */
+	/** Selects one of the built-in formatting presets for displaying the scalar value. */
 	UFUNCTION(BlueprintCallable, Category = "GameSetting")
 	UE_API void SetDisplayFormatPreset(EGameSettingScalarDynamicFormat InPreset);
 	
-	/**  */
+	/** Sets the source range and step size used for the scalar value. */
 	UE_API void SetSourceRangeAndStep(const TRange<double>& InRange, double InSourceStep);
 	UFUNCTION(BlueprintCallable, Category = "GameSetting")
 	UE_API void SetSourceRangeAndStepValues(double InMinimum, double InMaximum, double InSourceStep);
