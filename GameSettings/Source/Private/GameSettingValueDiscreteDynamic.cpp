@@ -67,9 +67,9 @@ const TArray<FString>& UGameSettingValueDiscreteDynamic::GetDynamicOptions() con
 	return OptionValues;
 }
 
-TArray<FString> UGameSettingValueDiscreteDynamic::GetDynamicOptionsCopy() const
+void UGameSettingValueDiscreteDynamic::GetDynamicOptionsCopy(TArray<FString>& OutOptions) const
 {
-	return OptionValues;
+	OutOptions = OptionValues;
 }
 
 bool UGameSettingValueDiscreteDynamic::HasDynamicOption(const FString& InOptionValue)

@@ -4,6 +4,7 @@
 
 #include "DataSource/GameSettingDataSource.h"
 #include "DataSource/GameSettingDataSourceDynamic.h"
+#include "Logging/LogMacros.h"
 #include "UObject/WeakObjectPtr.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(GameSettingValueScalarDynamic)
@@ -184,6 +185,7 @@ void UGameSettingValueScalarDynamic::SetDisplayFormatPreset(EGameSettingScalarDy
 		DisplayFormat = SourceAsInteger;
 		break;
 	default:
+		UE_LOG(LogTemp, Warning, TEXT("SetDisplayFormatPreset received unknown preset %d"), static_cast<int32>(InPreset));
 		DisplayFormat = Raw;
 		break;
 	}
@@ -207,14 +209,7 @@ void UGameSettingValueScalarDynamic::SetMinimumLimit(const TOptional<double>& In
 
 void UGameSettingValueScalarDynamic::SetMinimumLimitValue(bool bInHasMinimum, double InMinimum)
 {
-	if (bInHasMinimum)
-	{
-		SetMinimumLimit(TOptional<double>(InMinimum));
-	}
-	else
-	{
-		SetMinimumLimit(TOptional<double>());
-	}
+	SetMinimumLimit(bInHasMinimum ? TOptional<double>(InMinimum) : TOptional<double>());
 }
 
 void UGameSettingValueScalarDynamic::SetMaximumLimit(const TOptional<double>& InMaximum)
@@ -224,14 +219,7 @@ void UGameSettingValueScalarDynamic::SetMaximumLimit(const TOptional<double>& In
 
 void UGameSettingValueScalarDynamic::SetMaximumLimitValue(bool bInHasMaximum, double InMaximum)
 {
-	if (bInHasMaximum)
-	{
-		SetMaximumLimit(TOptional<double>(InMaximum));
-	}
-	else
-	{
-		SetMaximumLimit(TOptional<double>());
-	}
+	SetMaximumLimit(bInHasMaximum ? TOptional<double>(InMaximum) : TOptional<double>());
 }
 
 double UGameSettingValueScalarDynamic::GetValue() const
