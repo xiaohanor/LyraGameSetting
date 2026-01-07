@@ -190,7 +190,8 @@ void UGameSettingValueScalarDynamic::SetDisplayFormatPreset(EGameSettingScalarDy
 	default:
 		if (const UEnum* ScalarFormatEnum = StaticEnum<EGameSettingScalarDynamicFormat>())
 		{
-			UE_LOG(LogGameSettingValueScalarDynamic, Warning, TEXT("SetDisplayFormatPreset received unknown preset %s"), *ScalarFormatEnum->GetNameStringByValue(static_cast<int64>(InPreset)));
+			const FText PresetDisplayName = ScalarFormatEnum->GetDisplayNameTextByValue(static_cast<int64>(InPreset));
+			UE_LOG(LogGameSettingValueScalarDynamic, Warning, TEXT("SetDisplayFormatPreset received unknown preset %s"), *PresetDisplayName.ToString());
 		}
 		else
 		{

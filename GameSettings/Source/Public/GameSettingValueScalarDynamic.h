@@ -22,13 +22,21 @@ typedef TFunction<FText(double SourceValue, double NormalizedValue)> FSettingSca
 UENUM(BlueprintType)
 enum class EGameSettingScalarDynamicFormat : uint8
 {
+	/** Display the source value without additional formatting. */
 	Raw,
+	/** Display the source value with one fractional digit. */
 	RawOneDecimal,
+	/** Display the source value with two fractional digits. */
 	RawTwoDecimals,
+	/** Display normalized 0-1 value as a percentage with no decimals. */
 	ZeroToOnePercent,
+	/** Display normalized 0-1 value as a percentage with one decimal. */
 	ZeroToOnePercent_OneDecimal,
+	/** Display source value multiplied by 100 as a percentage. */
 	SourceAsPercent1,
+	/** Display source value as percentage assuming it is already scaled by 100. */
 	SourceAsPercent100,
+	/** Display source value as an integer with no decimals. */
 	SourceAsInteger,
 };
 
