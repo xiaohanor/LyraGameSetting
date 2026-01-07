@@ -77,7 +77,7 @@ FSettingScalarFormatFunction UGameSettingValueScalarDynamic::SourceAsPercent100(
 
 UGameSettingValueScalarDynamic::UGameSettingValueScalarDynamic()
 {
-	DisplayFormat = Raw;
+	SetDisplayFormatPreset(EGameSettingScalarDynamicFormat::Raw);
 }
 
 void UGameSettingValueScalarDynamic::Startup()

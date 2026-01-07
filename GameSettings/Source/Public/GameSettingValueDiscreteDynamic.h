@@ -50,8 +50,9 @@ public:
 	UE_API void AddDynamicOption(FString InOptionValue, FText InOptionText);
 	UFUNCTION(BlueprintCallable, Category = "GameSetting")
 	UE_API void RemoveDynamicOption(FString InOptionValue);
+	UE_API const TArray<FString>& GetDynamicOptions() const;
 	UFUNCTION(BlueprintCallable, Category = "GameSetting")
-	UE_API TArray<FString> GetDynamicOptions() const;
+	UE_API TArray<FString> GetDynamicOptionsCopy() const;
 
 	UFUNCTION(BlueprintCallable, Category = "GameSetting")
 	UE_API bool HasDynamicOption(const FString& InOptionValue);
