@@ -3,11 +3,16 @@
 #include "GameSettingValueScalarDynamic.h"
 
 #include "DataSource/GameSettingDataSource.h"
+#include "DataSource/GameSettingDataSourceDynamic.h"
+#include "Logging/LogMacros.h"
+#include "UObject/UnrealType.h"
 #include "UObject/WeakObjectPtr.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(GameSettingValueScalarDynamic)
 
 #define LOCTEXT_NAMESPACE "GameSetting"
+
+DEFINE_LOG_CATEGORY_STATIC(LogGameSettingValueScalarDynamic, Log, All);
 
 //////////////////////////////////////////////////////////////////////////
 // SettingScalarFormats
@@ -76,6 +81,7 @@ FSettingScalarFormatFunction UGameSettingValueScalarDynamic::SourceAsPercent100(
 
 UGameSettingValueScalarDynamic::UGameSettingValueScalarDynamic()
 {
+	DisplayFormat = Raw;
 }
 
 void UGameSettingValueScalarDynamic::Startup()
@@ -133,6 +139,16 @@ void UGameSettingValueScalarDynamic::SetDynamicSetter(const TSharedRef<FGameSett
 	Setter = InSetter;
 }
 
+void UGameSettingValueScalarDynamic::SetDynamicGetterPath(const TArray<FString>& InGetterPath)
+{
+	SetDynamicGetter(MakeShared<FGameSettingDataSourceDynamic>(InGetterPath));
+}
+
+void UGameSettingValueScalarDynamic::SetDynamicSetterPath(const TArray<FString>& InSetterPath)
+{
+	SetDynamicSetter(MakeShared<FGameSettingDataSourceDynamic>(InSetterPath));
+}
+
 void UGameSettingValueScalarDynamic::SetDefaultValue(double InValue)
 {
 	DefaultValue = InValue;
@@ -143,10 +159,58 @@ void UGameSettingValueScalarDynamic::SetDisplayFormat(FSettingScalarFormatFuncti
 	DisplayFormat = InDisplayFormat;
 }
 
+void UGameSettingValueScalarDynamic::SetDisplayFormatPreset(EGameSettingScalarDynamicFormat InPreset)
+{
+	switch (InPreset)
+	{
+	case EGameSettingScalarDynamicFormat::Raw:
+		DisplayFormat = Raw;
+		break;
+	case EGameSettingScalarDynamicFormat::RawOneDecimal:
+		DisplayFormat = RawOneDecimal;
+		break;
+	case EGameSettingScalarDynamicFormat::RawTwoDecimals:
+		DisplayFormat = RawTwoDecimals;
+		break;
+	case EGameSettingScalarDynamicFormat::ZeroToOnePercent:
+		DisplayFormat = ZeroToOnePercent;
+		break;
+	case EGameSettingScalarDynamicFormat::ZeroToOnePercent_OneDecimal:
+		DisplayFormat = ZeroToOnePercent_OneDecimal;
+		break;
+	case EGameSettingScalarDynamicFormat::SourceAsPercent1:
+		DisplayFormat = SourceAsPercent1;
+		break;
+	case EGameSettingScalarDynamicFormat::SourceAsPercent100:
+		DisplayFormat = SourceAsPercent100;
+		break;
+	case EGameSettingScalarDynamicFormat::SourceAsInteger:
+		DisplayFormat = SourceAsInteger;
+		break;
+	default:
+		if (const UEnum* ScalarFormatEnum = StaticEnum<EGameSettingScalarDynamicFormat>())
+		{
+			const FText PresetDisplayName = ScalarFormatEnum->GetDisplayNameTextByValue(static_cast<int64>(InPreset));
+			UE_LOG(LogGameSettingValueScalarDynamic, Warning, TEXT("SetDisplayFormatPreset received unknown preset %s"), *PresetDisplayName.ToString());
+		}
+		else
+		{
+			UE_LOG(LogGameSettingValueScalarDynamic, Warning, TEXT("SetDisplayFormatPreset received unknown preset value %d"), static_cast<int32>(InPreset));
+		}
+		DisplayFormat = Raw;
+		break;
+	}
+}
+
 void UGameSettingValueScalarDynamic::SetSourceRangeAndStep(const TRange<double>& InRange, double InStep)
 {
 	SourceRange = InRange;
 	SourceStep = InStep;
+}
+
+void UGameSettingValueScalarDynamic::SetSourceRangeAndStepValues(double InMinimum, double InMaximum, double InSourceStep)
+{
+	SetSourceRangeAndStep(TRange<double>(InMinimum, InMaximum), InSourceStep);
 }
 
 void UGameSettingValueScalarDynamic::SetMinimumLimit(const TOptional<double>& InMinimum)
@@ -154,9 +218,19 @@ void UGameSettingValueScalarDynamic::SetMinimumLimit(const TOptional<double>& In
 	Minimum = InMinimum;
 }
 
+void UGameSettingValueScalarDynamic::SetMinimumLimitValue(bool bInHasMinimum, double InMinimum)
+{
+	SetMinimumLimit(bInHasMinimum ? TOptional<double>(InMinimum) : TOptional<double>());
+}
+
 void UGameSettingValueScalarDynamic::SetMaximumLimit(const TOptional<double>& InMaximum)
 {
 	Maximum = InMaximum;
+}
+
+void UGameSettingValueScalarDynamic::SetMaximumLimitValue(bool bInHasMaximum, double InMaximum)
+{
+	SetMaximumLimit(bInHasMaximum ? TOptional<double>(InMaximum) : TOptional<double>());
 }
 
 double UGameSettingValueScalarDynamic::GetValue() const
