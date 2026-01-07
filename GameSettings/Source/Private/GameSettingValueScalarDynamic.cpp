@@ -11,6 +11,8 @@
 
 #define LOCTEXT_NAMESPACE "GameSetting"
 
+DEFINE_LOG_CATEGORY_STATIC(LogGameSettingValueScalarDynamic, Log, All);
+
 //////////////////////////////////////////////////////////////////////////
 // SettingScalarFormats
 //////////////////////////////////////////////////////////////////////////
@@ -185,7 +187,7 @@ void UGameSettingValueScalarDynamic::SetDisplayFormatPreset(EGameSettingScalarDy
 		DisplayFormat = SourceAsInteger;
 		break;
 	default:
-		UE_LOG(LogTemp, Warning, TEXT("SetDisplayFormatPreset received unknown preset %d"), static_cast<int32>(InPreset));
+		UE_LOG(LogGameSettingValueScalarDynamic, Warning, TEXT("SetDisplayFormatPreset received unknown preset %d"), static_cast<int32>(InPreset));
 		DisplayFormat = Raw;
 		break;
 	}

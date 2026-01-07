@@ -51,6 +51,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "GameSetting")
 	UE_API void RemoveDynamicOption(FString InOptionValue);
 	UE_API const TArray<FString>& GetDynamicOptions() const;
+	UE_API const TArray<FString>& GetDynamicOptions();
 	UFUNCTION(BlueprintCallable, Category = "GameSetting")
 	UE_API void GetDynamicOptionsCopy(UPARAM(ref) TArray<FString>& OutOptions) const;
 
