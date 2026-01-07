@@ -3,6 +3,7 @@
 #include "GameSettingValueScalarDynamic.h"
 
 #include "DataSource/GameSettingDataSource.h"
+#include "DataSource/GameSettingDataSourceDynamic.h"
 #include "UObject/WeakObjectPtr.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(GameSettingValueScalarDynamic)
@@ -76,6 +77,7 @@ FSettingScalarFormatFunction UGameSettingValueScalarDynamic::SourceAsPercent100(
 
 UGameSettingValueScalarDynamic::UGameSettingValueScalarDynamic()
 {
+	DisplayFormat = Raw;
 }
 
 void UGameSettingValueScalarDynamic::Startup()
@@ -133,6 +135,16 @@ void UGameSettingValueScalarDynamic::SetDynamicSetter(const TSharedRef<FGameSett
 	Setter = InSetter;
 }
 
+void UGameSettingValueScalarDynamic::SetDynamicGetterPath(const TArray<FString>& InGetterPath)
+{
+	SetDynamicGetter(MakeShared<FGameSettingDataSourceDynamic>(InGetterPath));
+}
+
+void UGameSettingValueScalarDynamic::SetDynamicSetterPath(const TArray<FString>& InSetterPath)
+{
+	SetDynamicSetter(MakeShared<FGameSettingDataSourceDynamic>(InSetterPath));
+}
+
 void UGameSettingValueScalarDynamic::SetDefaultValue(double InValue)
 {
 	DefaultValue = InValue;
@@ -143,10 +155,49 @@ void UGameSettingValueScalarDynamic::SetDisplayFormat(FSettingScalarFormatFuncti
 	DisplayFormat = InDisplayFormat;
 }
 
+void UGameSettingValueScalarDynamic::SetDisplayFormatPreset(EGameSettingScalarDynamicFormat InPreset)
+{
+	switch (InPreset)
+	{
+	case EGameSettingScalarDynamicFormat::Raw:
+		DisplayFormat = Raw;
+		break;
+	case EGameSettingScalarDynamicFormat::RawOneDecimal:
+		DisplayFormat = RawOneDecimal;
+		break;
+	case EGameSettingScalarDynamicFormat::RawTwoDecimals:
+		DisplayFormat = RawTwoDecimals;
+		break;
+	case EGameSettingScalarDynamicFormat::ZeroToOnePercent:
+		DisplayFormat = ZeroToOnePercent;
+		break;
+	case EGameSettingScalarDynamicFormat::ZeroToOnePercent_OneDecimal:
+		DisplayFormat = ZeroToOnePercent_OneDecimal;
+		break;
+	case EGameSettingScalarDynamicFormat::SourceAsPercent1:
+		DisplayFormat = SourceAsPercent1;
+		break;
+	case EGameSettingScalarDynamicFormat::SourceAsPercent100:
+		DisplayFormat = SourceAsPercent100;
+		break;
+	case EGameSettingScalarDynamicFormat::SourceAsInteger:
+		DisplayFormat = SourceAsInteger;
+		break;
+	default:
+		DisplayFormat = Raw;
+		break;
+	}
+}
+
 void UGameSettingValueScalarDynamic::SetSourceRangeAndStep(const TRange<double>& InRange, double InStep)
 {
 	SourceRange = InRange;
 	SourceStep = InStep;
+}
+
+void UGameSettingValueScalarDynamic::SetSourceRangeAndStepValues(double InMinimum, double InMaximum, double InSourceStep)
+{
+	SetSourceRangeAndStep(TRange<double>(InMinimum, InMaximum), InSourceStep);
 }
 
 void UGameSettingValueScalarDynamic::SetMinimumLimit(const TOptional<double>& InMinimum)
@@ -154,9 +205,33 @@ void UGameSettingValueScalarDynamic::SetMinimumLimit(const TOptional<double>& In
 	Minimum = InMinimum;
 }
 
+void UGameSettingValueScalarDynamic::SetMinimumLimitValue(bool bInHasMinimum, double InMinimum)
+{
+	if (bInHasMinimum)
+	{
+		SetMinimumLimit(TOptional<double>(InMinimum));
+	}
+	else
+	{
+		SetMinimumLimit(TOptional<double>());
+	}
+}
+
 void UGameSettingValueScalarDynamic::SetMaximumLimit(const TOptional<double>& InMaximum)
 {
 	Maximum = InMaximum;
+}
+
+void UGameSettingValueScalarDynamic::SetMaximumLimitValue(bool bInHasMaximum, double InMaximum)
+{
+	if (bInHasMaximum)
+	{
+		SetMaximumLimit(TOptional<double>(InMaximum));
+	}
+	else
+	{
+		SetMaximumLimit(TOptional<double>());
+	}
 }
 
 double UGameSettingValueScalarDynamic::GetValue() const

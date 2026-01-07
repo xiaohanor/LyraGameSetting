@@ -2,6 +2,7 @@
 
 #include "GameSettingValueDiscreteDynamic.h"
 #include "DataSource/GameSettingDataSource.h"
+#include "DataSource/GameSettingDataSourceDynamic.h"
 #include "UObject/WeakObjectPtr.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(GameSettingValueDiscreteDynamic)
@@ -24,6 +25,16 @@ void UGameSettingValueDiscreteDynamic::SetDynamicGetter(const TSharedRef<FGameSe
 void UGameSettingValueDiscreteDynamic::SetDynamicSetter(const TSharedRef<FGameSettingDataSource>& InSetter)
 {
 	Setter = InSetter;
+}
+
+void UGameSettingValueDiscreteDynamic::SetDynamicGetterPath(const TArray<FString>& InGetterPath)
+{
+	SetDynamicGetter(MakeShared<FGameSettingDataSourceDynamic>(InGetterPath));
+}
+
+void UGameSettingValueDiscreteDynamic::SetDynamicSetterPath(const TArray<FString>& InSetterPath)
+{
+	SetDynamicSetter(MakeShared<FGameSettingDataSourceDynamic>(InSetterPath));
 }
 
 void UGameSettingValueDiscreteDynamic::SetDefaultValueFromString(FString InOptionValue)
@@ -51,7 +62,7 @@ void UGameSettingValueDiscreteDynamic::RemoveDynamicOption(FString InOptionValue
 	}
 }
 
-const TArray<FString>& UGameSettingValueDiscreteDynamic::GetDynamicOptions()
+TArray<FString> UGameSettingValueDiscreteDynamic::GetDynamicOptions() const
 {
 	return OptionValues;
 }

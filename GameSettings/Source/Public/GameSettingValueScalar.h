@@ -19,7 +19,9 @@ class UGameSettingValueScalar : public UGameSettingValue
 public:
 	UE_API UGameSettingValueScalar();
 
+	UFUNCTION(BlueprintCallable, Category = "GameSetting")
 	UE_API void SetValueNormalized(double NormalizedValue);
+	UFUNCTION(BlueprintCallable, Category = "GameSetting")
 	UE_API double GetValueNormalized() const;
 
 	TOptional<double> GetDefaultValueNormalized() const

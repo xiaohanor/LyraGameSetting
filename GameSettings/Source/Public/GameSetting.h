@@ -48,6 +48,7 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable)
 	FName GetDevName() const { return DevName; }
+	UFUNCTION(BlueprintCallable)
 	void SetDevName(const FName& Value) { DevName = Value; }
 
 	bool GetAdjustListViewPostRefresh() const { return bAdjustListViewPostRefresh; }
@@ -55,16 +56,19 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	FText GetDisplayName() const { return DisplayName; }
+	UFUNCTION(BlueprintCallable)
 	void SetDisplayName(const FText& Value) { DisplayName = Value; }
 #if !UE_BUILD_SHIPPING
 	void SetDisplayName(const FString& Value) { SetDisplayName(FText::FromString(Value)); }
 #endif
 	UFUNCTION(BlueprintCallable)
 	ESlateVisibility GetDisplayNameVisibility() { return DisplayNameVisibility; }
+	UFUNCTION(BlueprintCallable)
 	void SetNameDisplayVisibility(ESlateVisibility InVisibility) { DisplayNameVisibility = InVisibility; }
 
 	UFUNCTION(BlueprintCallable)
 	FText GetDescriptionRichText() const { return DescriptionRichText; }
+	UFUNCTION(BlueprintCallable)
 	void SetDescriptionRichText(const FText& Value) { DescriptionRichText = Value; InvalidateSearchableText(); }
 #if !UE_BUILD_SHIPPING
 	/** This version is for cheats and other non-shipping items, that don't need to localize their text.  We don't permit this in shipping to prevent unlocalized text being introduced. */
@@ -73,6 +77,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	const FGameplayTagContainer& GetTags() const { return Tags; }
+	UFUNCTION(BlueprintCallable)
 	void AddTag(const FGameplayTag& TagToAdd) { Tags.AddTag(TagToAdd); }
 
 	void SetRegistry(UGameSettingRegistry* InOwningRegistry) { OwningRegistry = InOwningRegistry; }
@@ -81,6 +86,7 @@ public:
 	UE_API const FString& GetDescriptionPlainText() const;
 
 	/** Initializes the setting, giving it the owning local player.  Containers automatically initialize settings added to them. */
+	UFUNCTION(BlueprintCallable)
 	UE_API void Initialize(ULocalPlayer* InLocalPlayer);
 
 	/** Gets the owning local player for this setting - which all initialized settings will have. */
@@ -114,14 +120,17 @@ public:
 	UE_API void AddEditCondition(const TSharedRef<FGameSettingEditCondition>& InEditCondition);
 
 	/** Add setting dependency, if these settings change, we'll re-evaluate edit conditions for this setting. */
+	UFUNCTION(BlueprintCallable)
 	UE_API void AddEditDependency(UGameSetting* DependencySetting);
 
 	/** The parent object that owns the setting, in most cases the collection, but for top level settings the registry. */
+	UFUNCTION(BlueprintCallable)
 	UE_API void SetSettingParent(UGameSetting* InSettingParent);
 	UGameSetting* GetSettingParent() const { return SettingParent; }
 
 	/** Should this setting be reported to analytics. */
 	bool GetIsReportedToAnalytics() const { return bReportAnalytics; }
+	UFUNCTION(BlueprintCallable)
 	void SetIsReportedToAnalytics(bool bReport) { bReportAnalytics = bReport; }
 
 	/** Gets the analytics value for this setting. */
@@ -145,6 +154,7 @@ public:
 	 * Refresh the editable state of the setting and notify that the state has changed so that any UI currently
 	 * examining this setting is updated with the new options, or whatever.
 	 */
+	UFUNCTION(BlueprintCallable)
 	UE_API void RefreshEditableState(bool bNotifyEditConditionsChanged = true);
 
 	/**
@@ -152,6 +162,7 @@ public:
 	 * that go are immediately stored to a temporary location but we don't actually apply them until later
 	 * like selecting a new resolution.
 	 */
+	UFUNCTION(BlueprintCallable)
 	UE_API void Apply();
 
 	/** Gets the current world of the local player that owns these settings. */
