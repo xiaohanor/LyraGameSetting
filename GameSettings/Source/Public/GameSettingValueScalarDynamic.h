@@ -19,6 +19,19 @@ class UObject;
 
 typedef TFunction<FText(double SourceValue, double NormalizedValue)> FSettingScalarFormatFunction;
 
+UENUM(BlueprintType)
+enum class EGameSettingScalarFormatPreset : uint8
+{
+	Raw,
+	RawOneDecimal,
+	RawTwoDecimals,
+	ZeroToOnePercent,
+	ZeroToOnePercent_OneDecimal,
+	SourceAsPercent1,
+	SourceAsPercent100,
+	SourceAsInteger,
+};
+
 UCLASS(MinimalAPI)
 class UGameSettingValueScalarDynamic : public UGameSettingValueScalar
 {
@@ -39,6 +52,12 @@ private:
 public:
 	UE_API UGameSettingValueScalarDynamic();
 
+	UFUNCTION(BlueprintCallable, Category="GameSetting|Dynamic")
+	UE_API void SetDynamicGetterPath(const TArray<FString>& InGetterPath);
+
+	UFUNCTION(BlueprintCallable, Category="GameSetting|Dynamic")
+	UE_API void SetDynamicSetterPath(const TArray<FString>& InSetterPath);
+
 	/** UGameSettingValue */
 	UE_API virtual void Startup() override;
 	UE_API virtual void StoreInitial() override;
@@ -56,13 +75,18 @@ public:
 	/** UGameSettingValueDiscreteDynamic */
 	UE_API void SetDynamicGetter(const TSharedRef<FGameSettingDataSource>& InGetter);
 	UE_API void SetDynamicSetter(const TSharedRef<FGameSettingDataSource>& InSetter);
+	UFUNCTION(BlueprintCallable, Category="GameSetting|Dynamic")
 	UE_API void SetDefaultValue(double InValue);
 
 	/**  */
 	UE_API void SetDisplayFormat(FSettingScalarFormatFunction InDisplayFormat);
+	UFUNCTION(BlueprintCallable, Category="GameSetting|Dynamic")
+	UE_API void SetDisplayFormatPreset(EGameSettingScalarFormatPreset InPreset);
 	
 	/**  */
 	UE_API void SetSourceRangeAndStep(const TRange<double>& InRange, double InSourceStep);
+	UFUNCTION(BlueprintCallable, Category="GameSetting|Dynamic")
+	UE_API void SetSourceRangeAndStepValues(double InMinValue, double InMaxValue, double InSourceStep);
 	
 	/**
 	 * The SetSourceRangeAndStep defines the actual range the numbers could move in, but often
@@ -72,6 +96,10 @@ public:
 	 * That is the Minimum Limit.
 	 */
 	UE_API void SetMinimumLimit(const TOptional<double>& InMinimum);
+	UFUNCTION(BlueprintCallable, Category="GameSetting|Dynamic")
+	UE_API void SetMinimumLimitValue(double InMinimum);
+	UFUNCTION(BlueprintCallable, Category="GameSetting|Dynamic")
+	UE_API void ClearMinimumLimit();
 
 	/**
 	 * The SetSourceRangeAndStep defines the actual range the numbers could move in, but rarely
@@ -81,6 +109,10 @@ public:
 	 * That is the Maximum Limit.
 	 */
 	UE_API void SetMaximumLimit(const TOptional<double>& InMaximum);
+	UFUNCTION(BlueprintCallable, Category="GameSetting|Dynamic")
+	UE_API void SetMaximumLimitValue(double InMaximum);
+	UFUNCTION(BlueprintCallable, Category="GameSetting|Dynamic")
+	UE_API void ClearMaximumLimit();
 	
 protected:
 	/** UGameSettingValue */

@@ -2,6 +2,7 @@
 
 #include "GameSettingValueDiscreteDynamic.h"
 #include "DataSource/GameSettingDataSource.h"
+#include "DataSource/GameSettingDataSourceDynamic.h"
 #include "UObject/WeakObjectPtr.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(GameSettingValueDiscreteDynamic)
@@ -14,6 +15,16 @@
 
 UGameSettingValueDiscreteDynamic::UGameSettingValueDiscreteDynamic()
 {
+}
+
+void UGameSettingValueDiscreteDynamic::SetDynamicGetterPath(const TArray<FString>& InGetterPath)
+{
+	SetDynamicGetter(MakeShared<FGameSettingDataSourceDynamic>(InGetterPath));
+}
+
+void UGameSettingValueDiscreteDynamic::SetDynamicSetterPath(const TArray<FString>& InSetterPath)
+{
+	SetDynamicSetter(MakeShared<FGameSettingDataSourceDynamic>(InSetterPath));
 }
 
 void UGameSettingValueDiscreteDynamic::SetDynamicGetter(const TSharedRef<FGameSettingDataSource>& InGetter)
@@ -56,7 +67,12 @@ const TArray<FString>& UGameSettingValueDiscreteDynamic::GetDynamicOptions()
 	return OptionValues;
 }
 
-bool UGameSettingValueDiscreteDynamic::HasDynamicOption(const FString& InOptionValue)
+TArray<FString> UGameSettingValueDiscreteDynamic::GetOptionValues() const
+{
+	return OptionValues;
+}
+
+bool UGameSettingValueDiscreteDynamic::HasDynamicOption(const FString& InOptionValue) const
 {
 	return OptionValues.Contains(InOptionValue);
 }
