@@ -25,6 +25,12 @@ class UGameSettingValueDiscreteDynamic : public UGameSettingValueDiscrete
 public:
 	UE_API UGameSettingValueDiscreteDynamic();
 
+	UFUNCTION(BlueprintCallable, Category="GameSetting|Dynamic")
+	UE_API void SetDynamicGetterPath(const TArray<FString>& InGetterPath);
+
+	UFUNCTION(BlueprintCallable, Category="GameSetting|Dynamic")
+	UE_API void SetDynamicSetterPath(const TArray<FString>& InSetterPath);
+
 	/** UGameSettingValue */
 	UE_API virtual void Startup() override;
 	UE_API virtual void StoreInitial() override;
@@ -40,14 +46,21 @@ public:
 	/** UGameSettingValueDiscreteDynamic */
 	UE_API void SetDynamicGetter(const TSharedRef<FGameSettingDataSource>& InGetter);
 	UE_API void SetDynamicSetter(const TSharedRef<FGameSettingDataSource>& InSetter);
+	UFUNCTION(BlueprintCallable, Category="GameSetting|Dynamic")
 	UE_API void SetDefaultValueFromString(FString InOptionValue);
+	UFUNCTION(BlueprintCallable, Category="GameSetting|Dynamic")
 	UE_API void AddDynamicOption(FString InOptionValue, FText InOptionText);
+	UFUNCTION(BlueprintCallable, Category="GameSetting|Dynamic")
 	UE_API void RemoveDynamicOption(FString InOptionValue);
+	UFUNCTION(BlueprintPure, Category="GameSetting|Dynamic")
+	UE_API TArray<FString> GetOptionValues() const;
 	UE_API const TArray<FString>& GetDynamicOptions();
+	UFUNCTION(BlueprintPure, Category="GameSetting|Dynamic")
+	UE_API bool HasDynamicOption(const FString& InOptionValue) const;
 
-	UE_API bool HasDynamicOption(const FString& InOptionValue);
-
+	UFUNCTION(BlueprintPure, Category="GameSetting|Dynamic")
 	UE_API FString GetValueAsString() const;
+	UFUNCTION(BlueprintCallable, Category="GameSetting|Dynamic")
 	UE_API void SetValueFromString(FString InStringValue);
 
 protected:
@@ -84,9 +97,12 @@ public:
 	UE_API UGameSettingValueDiscreteDynamic_Bool();
 
 public:
+	UFUNCTION(BlueprintCallable, Category="GameSetting|Dynamic")
 	UE_API void SetDefaultValue(bool Value);
 
+	UFUNCTION(BlueprintCallable, Category="GameSetting|Dynamic")
 	UE_API void SetTrueText(const FText& InText);
+	UFUNCTION(BlueprintCallable, Category="GameSetting|Dynamic")
 	UE_API void SetFalseText(const FText& InText);
 
 #if !UE_BUILD_SHIPPING
