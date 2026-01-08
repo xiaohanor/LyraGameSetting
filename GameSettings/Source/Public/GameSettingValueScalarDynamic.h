@@ -19,27 +19,6 @@ class UObject;
 
 typedef TFunction<FText(double SourceValue, double NormalizedValue)> FSettingScalarFormatFunction;
 
-UENUM(BlueprintType)
-enum class EGameSettingScalarDynamicFormat : uint8
-{
-	/** Display the source value without additional formatting. */
-	Raw,
-	/** Display the source value with one fractional digit. */
-	RawOneDecimal,
-	/** Display the source value with two fractional digits. */
-	RawTwoDecimals,
-	/** Display normalized 0-1 value as a percentage with no decimals. */
-	ZeroToOnePercent,
-	/** Display normalized 0-1 value as a percentage with one decimal. */
-	ZeroToOnePercent_OneDecimal,
-	/** Display source value multiplied by 100 as a percentage. */
-	SourceAsPercent1,
-	/** Display source value as percentage assuming it is already scaled by 100. */
-	SourceAsPercent100,
-	/** Display source value as an integer with no decimals. */
-	SourceAsInteger,
-};
-
 UCLASS(MinimalAPI)
 class UGameSettingValueScalarDynamic : public UGameSettingValueScalar
 {
@@ -77,23 +56,13 @@ public:
 	/** UGameSettingValueDiscreteDynamic */
 	UE_API void SetDynamicGetter(const TSharedRef<FGameSettingDataSource>& InGetter);
 	UE_API void SetDynamicSetter(const TSharedRef<FGameSettingDataSource>& InSetter);
-	UFUNCTION(BlueprintCallable, Category = "GameSetting|DataSource")
-	UE_API void SetDynamicGetterPath(const TArray<FString>& InGetterPath);
-	UFUNCTION(BlueprintCallable, Category = "GameSetting|DataSource")
-	UE_API void SetDynamicSetterPath(const TArray<FString>& InSetterPath);
-	UFUNCTION(BlueprintCallable, Category = "GameSetting")
 	UE_API void SetDefaultValue(double InValue);
 
-	/** Sets a custom formatting function for displaying the scalar value. */
+	/**  */
 	UE_API void SetDisplayFormat(FSettingScalarFormatFunction InDisplayFormat);
-	/** Selects one of the built-in formatting presets for displaying the scalar value. */
-	UFUNCTION(BlueprintCallable, Category = "GameSetting")
-	UE_API void SetDisplayFormatPreset(EGameSettingScalarDynamicFormat InPreset);
 	
-	/** Sets the source range and step size used for the scalar value. */
+	/**  */
 	UE_API void SetSourceRangeAndStep(const TRange<double>& InRange, double InSourceStep);
-	UFUNCTION(BlueprintCallable, Category = "GameSetting")
-	UE_API void SetSourceRangeAndStepValues(double InMinimum, double InMaximum, double InSourceStep);
 	
 	/**
 	 * The SetSourceRangeAndStep defines the actual range the numbers could move in, but often
@@ -103,8 +72,6 @@ public:
 	 * That is the Minimum Limit.
 	 */
 	UE_API void SetMinimumLimit(const TOptional<double>& InMinimum);
-	UFUNCTION(BlueprintCallable, Category = "GameSetting")
-	UE_API void SetMinimumLimitValue(bool bInHasMinimum, double InMinimum);
 
 	/**
 	 * The SetSourceRangeAndStep defines the actual range the numbers could move in, but rarely
@@ -114,8 +81,6 @@ public:
 	 * That is the Maximum Limit.
 	 */
 	UE_API void SetMaximumLimit(const TOptional<double>& InMaximum);
-	UFUNCTION(BlueprintCallable, Category = "GameSetting")
-	UE_API void SetMaximumLimitValue(bool bInHasMaximum, double InMaximum);
 	
 protected:
 	/** UGameSettingValue */

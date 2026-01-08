@@ -20,7 +20,6 @@ public:
 	UE_API UGameSettingValueDiscrete();
 
 	/** UGameSettingValueDiscrete */
-	UFUNCTION(BlueprintCallable)
 	UE_API virtual void SetDiscreteOptionByIndex(int32 Index) PURE_VIRTUAL(,);
 	
 	UFUNCTION(BlueprintCallable)
