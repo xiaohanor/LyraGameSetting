@@ -35,14 +35,12 @@ public:
 public:
 
 	FText GetActionText() const { return ActionText; }
-	UFUNCTION(BlueprintCallable)
 	void SetActionText(FText Value) { ActionText = Value; }
 #if !UE_BUILD_SHIPPING
 	void SetActionText(const FString& Value) { SetActionText(FText::FromString(Value)); }
 #endif
-	
+
 	FGameplayTag GetNamedAction() const { return NamedAction; }
-	UFUNCTION(BlueprintCallable)
 	void SetNamedAction(FGameplayTag Value) { NamedAction = Value; }
 
 	bool HasCustomAction() const { return CustomAction.IsBound(); }
@@ -54,10 +52,8 @@ public:
 	 * revert, or they're things like show the credits or Eula.  However if that's not true, set this flag
 	 * to true to fire the change event when this action is fired.
 	 */
-	UFUNCTION(BlueprintCallable)
 	void SetDoesActionDirtySettings(bool Value) { bDirtyAction = Value; }
 
-	UFUNCTION(BlueprintCallable)
 	UE_API virtual void ExecuteAction();
 
 protected:

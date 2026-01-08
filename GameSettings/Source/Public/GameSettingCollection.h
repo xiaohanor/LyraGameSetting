@@ -23,10 +23,8 @@ public:
 	UE_API UGameSettingCollection();
 
 	virtual TArray<UGameSetting*> GetChildSettings() override { return Settings; }
-	UFUNCTION(BlueprintCallable)
 	UE_API TArray<UGameSettingCollection*> GetChildCollections() const;
 
-	UFUNCTION(BlueprintCallable)
 	UE_API void AddSetting(UGameSetting* Setting);
 	UE_API virtual void GetSettingsForFilter(const FGameSettingFilterState& FilterState, TArray<UGameSetting*>& InOutSettings) const;
 
@@ -56,7 +54,6 @@ public:
 	UE_API UGameSettingCollectionPage();
 
 	FText GetNavigationText() const { return NavigationText; }
-	UFUNCTION(BlueprintCallable)
 	void SetNavigationText(FText Value) { NavigationText = Value; }
 #if !UE_BUILD_SHIPPING
 	void SetNavigationText(const FString& Value) { SetNavigationText(FText::FromString(Value)); }
@@ -67,7 +64,6 @@ public:
 	virtual bool IsSelectable() const override { return true; }
 
 	/**  */
-	UFUNCTION(BlueprintCallable)
 	UE_API void ExecuteNavigation();
 
 private:
